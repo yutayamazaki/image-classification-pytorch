@@ -1,1 +1,1 @@
-from swish import Swish
+from pipeline.activations.swish import Swish
