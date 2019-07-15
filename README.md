@@ -1,2 +1,2 @@
 # PyTorch-Template
-Template repository for image classification tasks
+The template repository for Deep Learning in Computer Vision.
