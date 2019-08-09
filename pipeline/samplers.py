@@ -33,9 +33,11 @@ class ImbalancedSampler(torch.utils.data.sampler.Sampler):
             return dataset.train_labels[idx].item()
         elif dataset_type is torchvision.datasets.ImageFolder:
             return dataset.imgs[idx][1]
+        elif dataset_type == torch.utils.data.TensorDataset:
+            return int(dataset.tensors[1][idx])
         else:
             raise NotImplementedError
-                
+
     def __iter__(self):
         return (self.indices[i] for i in torch.multinomial(
             self.weights, self.num_samples, replacement=True))
