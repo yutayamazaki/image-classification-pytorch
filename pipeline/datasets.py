@@ -5,7 +5,14 @@ from PIL import Image
 from torch.utils.data import Dataset
 
 
-class ImageDataset(Dataset):
+class RecognitionDataset(Dataset):
+    """Simple Dataset class for image recognition.
+
+    Args:
+        img_path_list (list): A list of paths for each image.
+        labels (Iterable): A iterable object of each labels.
+        transform (Callable): A callable object to transform each images.
+    """
 
     def __init__(self, img_path_list, labels, transform):
         self.img_path_list = img_path_list
