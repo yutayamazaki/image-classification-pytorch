@@ -7,21 +7,13 @@ class CosineAnnealingLRWithWarmRestart(_LRScheduler):
     """ Implementation of STOCHASTIC GRADIENT DESCENT WITH WARM RESTARTS.
         https://arxiv.org/pdf/1608.03983.pdf
 
-        Parameters
-        ----------
-        optimizer: torch.optim.Optimizer
-        
-        init_T_max: int
-            Number of epochs in initial iteration(before warm restarts).
-
-        eta_min: float
-            Minimum learning rate. Default: 0.
-
-        last_epoch: int
-            The index of last epoch. Default: -1.
-
-        T_mult: float
-            Iteration factor in each restart.
+        Args:
+            optimizer (torch.optim.Optimizer): Torch optimizer instance.
+            init_T_max (int): Number of epochs in initial iteration
+                              (before warm restarts).
+            eta_min: (float): Minimum learning rate. Default: 0.
+            last_epoch (int): An index of last epoch. Default: -1.
+            T_mult (float): Iteration factor in each restart.
     """
 
     def __init__(
