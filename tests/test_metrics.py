@@ -2,7 +2,7 @@ import unittest
 
 import torch
 
-from pipeline import metrics
+from src import metrics
 
 
 class AccuracyTest(unittest.TestCase):

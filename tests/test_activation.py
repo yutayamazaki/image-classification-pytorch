@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import torch
 
-from pipeline import activations
+from src import activations
 
 
 class SwishTest(unittest.TestCase):

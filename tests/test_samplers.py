@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import torchvision
 
-from pipeline import samplers
+from src import samplers
 
 
 class ImbalancedSamplerTest(unittest.TestCase):

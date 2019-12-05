@@ -2,7 +2,7 @@ import unittest
 
 import torch
 
-from pipeline import models
+from src import models
 
 
 class UnetTest(unittest.TestCase):
