@@ -1,9 +1,7 @@
-from PIL import Image
-import numpy as np
-from sklearn.model_selection import train_test_split
 import torch
-from torch.utils.data import DataLoader, Dataset
 import torchvision
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Dataset
 
 from data_utils import load_kmnist
 from trainers import RecognitionTrainer

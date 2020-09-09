@@ -1,6 +1,6 @@
-from sklearn.metrics import accuracy_score
 import torch
 from tqdm import tqdm
+from sklearn.metrics import accuracy_score
 
 
 class AbstractTrainer:
@@ -36,7 +36,7 @@ class RecognitionTrainer(AbstractTrainer):
             targets = targets.to(self.device).long()
 
             self.optimizer.zero_grad()
-            outputs = F.softmax(self._model(inputs), dim=1)
+            outputs = self._model(inputs)
 
             loss = self.criterion(outputs, targets)
 
@@ -63,7 +63,7 @@ class RecognitionTrainer(AbstractTrainer):
         for inputs, targets in tqdm(eval_loader):
             inputs = inputs.to(self.device)
             targets = targets.to(self.device).long()
-            outputs = F.softmax(self._model(inputs), dim=1)
+            outputs = self._model(inputs)
 
             loss = self.criterion(outputs, targets)
 
@@ -78,55 +78,3 @@ class RecognitionTrainer(AbstractTrainer):
         acc = accuracy_score(y_trues, y_preds)
 
         return epoch_loss, acc
-
-
-class SegmentationTrainer(AbstractTrainer):
-
-    def epoch_train(self, train_loader):
-        self._model.train()
-        epoch_loss = 0.
-        epoch_iou = 0.
-
-        for inputs, targets in tqdm(train_loader):
-            inputs = inputs.to(self.device)
-            targets = targets.to(self.device)
-
-            outputs = self._model(inputs)
-
-            b, _, h, w = outputs.size()
-            outputs = outputs.permute(0, 2, 3, 1)
-
-            outputs = outputs.resize(b*h*w, self.num_classes)
-            targets = targets.resize(b*h*w)
-
-            loss = self.criterion(outputs, targets)
-
-            loss.backward()
-            epoch_loss += loss.item()
-            self.optimizer.step()
-            self.optimizer.zero_grad()
-
-        return epoch_loss / len(train_loader)
-
-    def epoch_eval(self, eval_loader):
-        self._model.eval()
-        epoch_loss = 0.
-        epoch_iou = 0.
-
-        for inputs, targets in tqdm(eval_loader):
-            inputs = inputs.to(self.device)
-            targets = targets.to(self.device)
-
-            outputs = self._model(inputs)
-
-            b, _, h, w = outputs.size()
-            outputs = outputs.permute(0, 2, 3, 1)
-
-            outputs = outputs.resize(b*h*w, self.num_classes)
-            targets = targets.resize(b*h*w)
-
-            loss = self.criterion(outputs, targets)
-
-            epoch_loss += loss.item()
-
-        return epoch_loss / len(eval_loader)

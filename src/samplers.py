@@ -1,9 +1,11 @@
+from typing import List
 import torch
 import torchvision
 
 
 class ImbalancedSampler(torch.utils.data.sampler.Sampler):
-    """Samples elements randomly from a given list of indices for imbalanced dataset
+    """Samples elements randomly from a given list of indices for imbalanced
+    dataset.
     https://github.com/ufoym/imbalanced-dataset-sampler/blob/master/sampler.py
     Arguments:
         indices (list, optional): a list of indices
@@ -11,8 +13,8 @@ class ImbalancedSampler(torch.utils.data.sampler.Sampler):
     """
 
     def __init__(self, dataset):
-        self.indices = list(range(len(dataset)))
-        self.num_samples = len(self.indices)
+        self.indices: List[int] = list(range(len(dataset)))
+        self.num_samples: int = len(self.indices)
 
         label_to_count = {}
         for idx in self.indices:
@@ -27,7 +29,7 @@ class ImbalancedSampler(torch.utils.data.sampler.Sampler):
                    for idx in self.indices]
         self.weights = torch.DoubleTensor(weights)
 
-    def _get_label(self, dataset, idx):
+    def _get_label(self, dataset, idx: int):
         dataset_type = type(dataset)
         if dataset_type is torchvision.datasets.MNIST:
             return dataset.train_labels[idx].item()
@@ -42,5 +44,5 @@ class ImbalancedSampler(torch.utils.data.sampler.Sampler):
         return (self.indices[i] for i in torch.multinomial(
             self.weights, self.num_samples, replacement=True))
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self.num_samples
