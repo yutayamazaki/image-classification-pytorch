@@ -24,5 +24,6 @@ jobs:
       run: |
         mypy src
     - name: Test
+      working-directory: ./src
       run: |
         python -m unittest discover tests
