@@ -1,1 +1,1 @@
-from src.activations.swish import Swish
+from activations.swish import Swish

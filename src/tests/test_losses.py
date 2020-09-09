@@ -2,7 +2,7 @@ import unittest
 
 import torch
 
-from src import losses
+import losses
 
 
 class FocalLossTest(unittest.TestCase):

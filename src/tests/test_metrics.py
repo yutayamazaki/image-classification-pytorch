@@ -2,7 +2,7 @@ import unittest
 
 import torch
 
-from src import metrics
+import metrics
 
 
 class AccuracyTest(unittest.TestCase):
@@ -37,11 +37,11 @@ class AccuracyTest(unittest.TestCase):
         y_pred = torch.zeros((4, 2, 1))
 
         with self.assertRaises(ValueError):
-            acc = metrics.accuracy_score(y_true, y_pred)
+            metrics.accuracy_score(y_true, y_pred)
 
     def test_value_error_inconsistent_length(self):
         y_true = torch.Tensor([0, 1])
         y_pred = torch.Tensor([0])
 
         with self.assertRaises(ValueError):
-            acc = metrics.accuracy_score(y_true, y_pred)
+            metrics.accuracy_score(y_true, y_pred)

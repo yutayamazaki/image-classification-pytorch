@@ -1,10 +1,8 @@
 import unittest
 
-import numpy as np
 import torch
-import torchvision
 
-from src import samplers
+import samplers
 
 
 class ImbalancedSamplerTest(unittest.TestCase):
