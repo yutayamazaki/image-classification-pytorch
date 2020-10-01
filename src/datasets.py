@@ -1,43 +1,73 @@
 import glob
+import os
+from typing import Callable, Dict, List, Tuple
 
 import numpy as np
+import torch
 from PIL import Image
+from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset
 
+import consts
 
-class RecognitionDataset(Dataset):
-    """Simple Dataset class for image recognition.
 
+class ClassificationDataset(Dataset):
+    """ PyTorch dataset for image classification.
     Args:
-        img_path_list (list): A list of paths for each image.
-        labels (Iterable): A iterable object of each labels.
-        transform (Callable): A callable object to transform each images.
+        X (List[str]): Paths to train image.
+        y (List[int]): Labels of each images.
+        transform (Callable): A callable instance of albumentations.
     """
+    def __init__(
+        self, X: List[str], y: List[int], transforms: Callable
+    ):
+        X_exists, y_exists = self._check_images_exist(X, y)
+        self.X: List[str] = X_exists
+        self.y: List[int] = y_exists
 
-    def __init__(self, img_path_list, labels, transform):
-        self.img_path_list = img_path_list
-        self.labels = labels
-        self.transform = transform
+        self.transforms: Callable = transforms
 
-    def __len__(self):
-        return len(self.img_path_list)
+    def __len__(self) -> int:
+        return len(self.X)
 
-    def __getitem__(self, idx):
-        img_path = self.img_path_list[idx]
-        img = Image.open(img_path)
-        X = self.transform(img)
+    @staticmethod
+    def _check_images_exist(
+        X: List[str], y: List[int]
+    ) -> Tuple[List[str], List[int]]:
+        X_, y_ = [], []
+        for x_img, y_label in zip(X, y):
+            if os.path.exists(x_img):
+                X_.append(x_img)
+                y_.append(y_label)
+            else:
+                print(f'Not found {x_img}.')
+        return X_, y_
 
-        y = self.labels[idx]
-        return X, y
+    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, int]:
+        pil_img: Image.Image = Image.open(self.X[idx]).convert('RGB')
+        label: int = self.y[idx]
+
+        img_arr: np.ndarray = np.array(pil_img)
+        aug: Dict[str, np.ndarray] = self.transforms(image=img_arr)
+        img: torch.Tensor = torch.as_tensor(
+            aug['image'].transpose(2, 0, 1)
+        ).float()
+
+        return img, label
 
 
-def load_images(base_dir, categories):
-    img_path_list = []
-    labels = []
-    for i, cat in enumerate(categories):
-        img_dir = base_dir + cat
-        img_path = glob.glob(img_dir + '/*')
-        img_path_list += img_path
-        labels += [i] * len(img_path)
+def load_paths_and_labels(root: str = '../images'):
+    img_paths: List[str] = []
+    labels: List[int] = []
+    for class_idx, class_name in enumerate(consts.class_names):
+        paths: List[str] = glob.glob(os.path.join(root, class_name, '*.jpg'))
+        img_paths += paths
+        labels += [class_idx for _ in range(len(paths))]
 
-    return np.array(img_path_list), np.array(labels)
+    X_train, X_test, y_train, y_test = train_test_split(
+        img_paths, labels, test_size=0.2, random_state=428
+    )
+    X_train, X_valid, y_train, y_valid = train_test_split(
+        X_train, y_train, test_size=0.2, random_state=428
+    )
+    return X_train, X_valid, X_test, y_train, y_valid, y_test

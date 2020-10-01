@@ -1,0 +1,140 @@
+readme: description
+batch_size: 8
+num_classes: &num_classes 2
+num_epochs: 100
+lr: 0.1
+momentum: 0.9
+img_size: &img_size 224
+
+model:
+  name: resnet34
+  num_classes: *num_classes
+  params:
+    pretrained: True
+  freeze_endoder: False  # freeze encoder in 1~5 epoch or not.
+  # name: resnetarcface
+  # num_classes: *num_classes
+  # params:
+  #   pretrained: True
+  #   out_features: *num_classes
+  #   backbone: resnet34
+  #   s: 30.0
+loss:
+  # name: FocalLoss
+  # params:
+  #   gamma: 2.0
+  #   size_average: True
+  name: CrossEntropyLoss
+  params:
+    weight: null
+    size_average: null
+    ignore_index: -100
+    reduce: null
+    reduction: mean
+optimizer:
+  name: SGD
+  params:
+    lr: 0.1
+    momentum: 0.9
+    weight_decay: 0.0003
+scheduler:
+  name: CosineAnnealingLR
+  params:
+    T_max: 3
+    eta_min: 0.0001
+    last_epoch: -1
+  # name: CosineAnnealingWarmRestarts
+  # params:
+  #   T_0: 10
+  #   T_mult: 2
+  #   eta_min: 0.0001
+  #   last_epoch: -1
+
+albumentations:
+    valid:
+      __version__: 0.4.6
+      transform:
+        __class_fullname__: albumentations.core.composition.Compose
+        p: 1.0
+        transforms:
+        - __class_fullname__: albumentations.augmentations.transforms.Normalize
+          always_apply: False
+          max_pixel_value: 255.0
+          mean:
+          - 0.2866538026615911
+          - 0.2812820557702096
+          - 0.26895509977250237
+          p: 1.0
+          std:
+          - 0.2536704014864796
+          - 0.2527869062847341
+          - 0.2504374850311773
+        - __class_fullname__: albumentations.augmentations.transforms.Resize
+          height: *img_size
+          width: *img_size
+          interpolation: 1
+          always_apply: false
+          p: 1
+    train:
+      __version__: 0.4.6
+      transform:
+        __class_fullname__: albumentations.core.composition.Compose
+        p: 1.0
+        transforms:
+        - __class_fullname__: albumentations.augmentations.transforms.Normalize
+          always_apply: false
+          max_pixel_value: 255.0
+          mean:
+          - 0.2866538026615911
+          - 0.2812820557702096
+          - 0.26895509977250237
+          p: 1.0
+          std:
+          - 0.2536704014864796
+          - 0.2527869062847341
+          - 0.2504374850311773
+        - __class_fullname__: albumentations.augmentations.transforms.Resize
+          height: *img_size
+          width: *img_size
+          interpolation: 1
+          always_apply: false
+          p: 1
+        # - __class_fullname__: albumentations.augmentations.transforms.GaussNoise
+        #   always_apply: false
+        #   p: 0.5
+        #   var_limit:
+        #   - 10.0
+        #   - 50.0
+        #   mean: 0
+        # - __class_fullname__: albumentations.augmentations.transforms.RandomBrightness
+        #   limit: 0.2
+        #   always_apply: false
+        #   p: 0.5
+        # - __class_fullname__: albumentations.augmentations.transforms.RandomContrast
+        #   limit: 0.2
+        #   always_apply: false
+        #   p: 0.5
+    test:
+      __version__: 0.4.6
+      transform:
+        __class_fullname__: albumentations.core.composition.Compose
+        p: 1.0
+        transforms:
+        - __class_fullname__: albumentations.augmentations.transforms.Normalize
+          always_apply: false
+          max_pixel_value: 255.0
+          mean:
+          - 0.2866538026615911
+          - 0.2812820557702096
+          - 0.26895509977250237
+          p: 1.0
+          std:
+          - 0.2536704014864796
+          - 0.2527869062847341
+          - 0.2504374850311773
+        - __class_fullname__: albumentations.augmentations.transforms.Resize
+          height: *img_size
+          width: *img_size
+          interpolation: 1
+          always_apply: false
+          p: 1

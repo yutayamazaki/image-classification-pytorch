@@ -1,6 +1,10 @@
-# original
+# Custom
 data/
 .DS_Store
+experiments/*
+!experiments/.gitkeep
+images/*
+!images/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
