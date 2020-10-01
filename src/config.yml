@@ -1,7 +1,7 @@
 readme: description
-batch_size: 8
+batch_size: 16
 num_classes: &num_classes 2
-num_epochs: 100
+num_epochs: 5
 lr: 0.1
 momentum: 0.9
 img_size: &img_size 224
@@ -61,14 +61,14 @@ albumentations:
           always_apply: False
           max_pixel_value: 255.0
           mean:
-          - 0.2866538026615911
-          - 0.2812820557702096
-          - 0.26895509977250237
+          - 0.485
+          - 0.456
+          - 0.406
           p: 1.0
           std:
-          - 0.2536704014864796
-          - 0.2527869062847341
-          - 0.2504374850311773
+          - 0.229
+          - 0.224
+          - 0.225
         - __class_fullname__: albumentations.augmentations.transforms.Resize
           height: *img_size
           width: *img_size
@@ -85,14 +85,14 @@ albumentations:
           always_apply: false
           max_pixel_value: 255.0
           mean:
-          - 0.2866538026615911
-          - 0.2812820557702096
-          - 0.26895509977250237
+          - 0.485
+          - 0.456
+          - 0.406
           p: 1.0
           std:
-          - 0.2536704014864796
-          - 0.2527869062847341
-          - 0.2504374850311773
+          - 0.229
+          - 0.224
+          - 0.225
         - __class_fullname__: albumentations.augmentations.transforms.Resize
           height: *img_size
           width: *img_size
@@ -124,14 +124,14 @@ albumentations:
           always_apply: false
           max_pixel_value: 255.0
           mean:
-          - 0.2866538026615911
-          - 0.2812820557702096
-          - 0.26895509977250237
+          - 0.485
+          - 0.456
+          - 0.406
           p: 1.0
           std:
-          - 0.2536704014864796
-          - 0.2527869062847341
-          - 0.2504374850311773
+          - 0.229
+          - 0.224
+          - 0.225
         - __class_fullname__: albumentations.augmentations.transforms.Resize
           height: *img_size
           width: *img_size
