@@ -63,4 +63,6 @@ if __name__ == '__main__':
 
     img_id: str = _get_image_id()
     plt.imshow(gradcam_img)
-    plt.savefig(f'../visualized_results/{img_id}.png')
+    plt.savefig(f'../{img_id}.png')
+
+    print(net(inputs)[0].detach().cpu().numpy())
