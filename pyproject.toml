@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "image-classification-pytorch"
+version = "0.1.0"
+description = ""
+authors = ["yutayamazaki <tppymd@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+albumentations = "^0.5.2"
+matplotlib = "^3.4.0"
+numpy = "^1.20.2"
+opencv-python = "^4.5.1"
+PyYAML = "^5.4.1"
+scikit-learn = "^0.24.1"
+seaborn = "^0.11.1"
+torch = "^1.8.1"
+torchvision = "^0.9.1"
+tqdm = "^4.59.0"
+
+[tool.poetry.dev-dependencies]
+flake8 = "3.8.3"
+mypy = "0.782"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

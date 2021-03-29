@@ -24,7 +24,7 @@ def average_hash(img: Image.Image) -> str:
         str: Hashed string.
     """
     resized_gray: Image.Image = img.resize((8, 8)).convert('L')
-    avg: float = np.mean(resized_gray)
+    avg = np.mean(resized_gray)
     bit_img: np.ndarray = np.array(resized_gray) >= avg
     bit_flatten: np.ndarray = bit_img.flatten().astype(int)
     return ''.join(map(str, bit_flatten.tolist()))
