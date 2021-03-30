@@ -5,6 +5,7 @@ import torch.nn as nn
 import torchvision
 
 import models
+import losses
 
 
 def load_optimizer(params, name: str, **kwargs) -> torch.optim.Optimizer:
@@ -40,9 +41,11 @@ def load_scheduler(
 def load_loss(name: str, **kwargs) -> nn.Module:
     if name == 'CrossEntropyLoss':
         return nn.CrossEntropyLoss(**kwargs)
+    elif name == 'FocalLoss':
+        return losses.FocalLoss(**kwargs)
     else:
         attributes: Tuple[str] = (
-            'CrossEntropyLoss',
+            'CrossEntropyLoss', 'FocalLoss'
         )
         raise ValueError(f'name must be in {attributes}.')
 
